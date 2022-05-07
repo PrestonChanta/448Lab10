@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf=8">
+        <title>Delete Posts</title>
+    </head>    
+    <body>
+        <form action="DeletePost.php" method="post">
+            <?php
+                error_reporting(E_ALL); 
+                ini_set("display_errors", 1);
+            
+                $mysqli = new mysqli("mysql.eecs.ku.edu", "p556c035", "Lai9eija", "p556c035");
+                /* check connection */
+                if ($mysqli->connect_error) 
+                    {
+                        die("Connect failed: %s\n". $mysqli->connect_error);
+                    }
+                    $query = "SELECT * FROM Posts";
+                    $result = mysqli_query($mysqli,$query);
+            
+                    echo "<style>
+                    table, th, td
+                    {
+                        border:1px solid black;
+                    }
+                    .center 
+                    {
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                    </style>";
+                    
+                    echo "<table class='center'><tr><th>Posts</th><th>Authors</th><th>Delete?</th></tr>";
+                    while($row = mysqli_fetch_array($result))
+                    { 
+                        echo "<tr><td>" . $row['content'] . "</td><td>" . $row['author_id'] . "</td><td><input type='checkbox' name='posts[]' value='". $row['post_id']."'></td><tr>"; 
+                    }
+                        
+                        echo "</table>";
+                /* close connection */
+                $mysqli->close();
+            ?>
+            <div class="wrap">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+        <style>
+            .wrap {
+                width: 100%;
+                height: 46px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+        </style>
+    </body>
+</html>
